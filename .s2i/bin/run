@@ -7,4 +7,6 @@
 #	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
 #
 
-exec /usr/local/tomcat/bin/catalina.sh run
+#exec /usr/local/tomcat/bin/catalina.sh run
+#export CATALINA_OPTS="$CATALINA_OPTS -DopenunisonKeystorePassword=$OPENUNISON_KEYSTORE_PASSWORD" && exec /bin/bash
+exec /usr/local/tomcat/bin/run.sh

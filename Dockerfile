@@ -32,17 +32,21 @@ RUN yum install -y which tar java-${JDK_VERSION}-openjdk-devel.x86_64 net-tools.
     mkdir -p /usr/local/tremolo/tremolo-service && \
     useradd -u 431 -r -g tremoloadmin -d /usr/local/tremolo/tremolo-service -s /sbin/nologin -c "OpenUnison Docker image user" tremoloadmin
 
-#COPY ./tomcat-conf/context.xml /usr/local/apache-tomcat-${TOMCAT_VERSION}/context.xml
 ADD server.xml /usr/local/apache-tomcat-${TOMCAT_VERSION}/conf/
+ADD run.sh /usr/local/apache-tomcat-${TOMCAT_VERSION}/bin/
 
-# TODO (optional): Copy the builder files into /opt/app-root
-#COPY ./etc /etc/openunison
-
-# TODO: Copy the S2I scripts to /usr/libexec/s2i, since openshift/base-centos7 image sets io.openshift.s2i.scripts-url label that way, or update that label
-# COPY ./.s2i/bin/ /usr/libexec/s2i
+# Copy the S2I scripts to /usr/local/bin since I updated the io.openshift.s2i.scripts-url label 
 COPY ./.s2i/bin/ /usr/local/bin/s2i
 
-RUN chown -R tremoloadmin:tremoloadmin /usr/local/tremolo /etc/openunison /tmp/drivers /usr/local/apache-maven-$MAVEN_VERSION /usr/local/apache-tomcat-$TOMCAT_VERSION /usr/local/tomcat /usr/local/bin/mvn
+RUN chown -R tremoloadmin:tremoloadmin \
+    /usr/local/tremolo \
+    /etc/openunison \
+    /tmp/drivers \
+    /usr/local/apache-maven-$MAVEN_VERSION \
+    /usr/local/apache-tomcat-$TOMCAT_VERSION \
+    /usr/local/tomcat \
+    /usr/local/bin/mvn \
+  && chmod +x /usr/local/apache-tomcat-${TOMCAT_VERSION}/bin/run.sh
 
 USER 431
 

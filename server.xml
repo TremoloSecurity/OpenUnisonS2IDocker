@@ -87,7 +87,7 @@
                clientAuth="false" sslProtocol="TLS" 
                keystoreFile="/etc/openunison/unisonKeyStore.jks"
                keystoreType="JCEKS"
-               keystorePass="start123"
+               keystorePass="${unisonKeystorePassword}"
                keyAlias="unison-tls"/>
     
 

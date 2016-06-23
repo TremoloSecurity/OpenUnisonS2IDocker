@@ -17,15 +17,6 @@ if [[ "$1" == "-h" ]]; then
 	exec /usr/libexec/s2i/usage
 fi
 
-# Restore artifacts from the previous build (if they exist).
-#
-#if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
-#  echo "---> Restoring build artifacts..."
-#  mv /tmp/artifacts/. ./
-#fi
-
-
-
 
 function setup_webapps() {
   echo "Backing up default webapps directory..."
@@ -40,41 +31,6 @@ function setup_webapps() {
   warFileName=`find /tmp/src -type f -name openunison*.war -print`
   cp $warFileName $TOMCAT_HOME/webapps/ROOT.war
 }
-
-#function config_openunison() {
-  # /etc/openunison is hard-coded into the configuration files, so need to figure out how to update files as
-  # well as this script if we want to be able to adjust at run time
-#  OPENUNISON_CFG_HOME="/etc/openunison"
-
-#  echo "Setting up OpenUnison configuration files..."
-#  if [[ ! -d $OPENUNISON_CFG_HOME ]]; then
-#    echo "Creating $OPENUNISON_CFG_HOME..."
-#    mkdir $OPENUNISON_CFG_HOME
-#  fi
-
-#  echo "Copying configuration files..."
-#  for file in unisonService.props unison.xml unisonKeyStore.jks myvd.conf log4j.xml
-#  do
-#    if [ -f /tmp/src/$file ]; then
-#      echo "... $file"
-#      cp /tmp/src/$file $OPENUNISON_CFG_HOME 
-#    else
-#      echo "... $file not found"
-#    fi
-#  done
-#}
-
-
-# Testing and debug info.  TODO: Delete this!
-#echo "Default working dir: "
-#pwd
-#cd /tmp/src
-#echo "Current working dir: "
-#pwd
-#echo "whoami: "
-#whoami
-#echo "TOMCAT_HOME: $TOMCAT_HOME"
-#echo "MAVEN_HOME: $MAVEN_HOME"
 
 
 echo "Looking for OpenUnison war file or pom.xml..."
@@ -106,37 +62,12 @@ elif [ -f "/tmp/src/pom.xml" ]; then
     exit $ERR
   fi
 
-#  echo "Copying context.xml..."
-#  if [ -f /tmp/src/context.xml ]; then
-#    echo "... context.xml"
-#    if [[ ! -d src/main/webapp/META-INF ]]; then
-#      echo "Creating META-INF directory..."
-#      mkdir src/main/webapp/META-INF
-#      cp /tmp/src/context.xml src/main/webapp/META-INF
-#    else
-#      echo "... context.xml not found"
-#    fi
-#  fi
-
   setup_webapps
+else
+  echo "ERROR: No war file or pom.xml file found. Quitting."
+  exit 1
 fi
 
-#config_openunison
-
-#if [ -f /tmp/src/server.xml ]; then
-#  echo " ---> Configuring Tomcat for SSL..."
-#  mv $TOMCAT_HOME/conf/server.xml $TOMCAT_HOME/conf/server.xml.ORIG
-#  cp /tmp/src/server.xml $TOMCAT_HOME/conf/
-#fi
-
-# TODO: Why is "Permission denied" when we try to remove this directory? It's owned by tremoloadmin.
-#echo "Removing Maven..."
-#rm -rf $MAVEN_HOME
-#rm /usr/local/bin/mvn
-
-# TODO: Deal with keys/keystores
-
-echo "...Done"
-
+echo "Done."
 exit
 
