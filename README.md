@@ -127,4 +127,8 @@ com.tremolosecurity.openunison.externalSecurePort=443
 #Uncomment and set for production deployments
 #com.tremolosecurity.openunison.activemqdir=/var/lib/unison-activemq
 ```
+Create the unison.xml file using the below template:
 
+```xml
+
+```
