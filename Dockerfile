@@ -5,7 +5,7 @@ MAINTAINER Tremolo Security, Inc. - Docker <docker@tremolosecurity.com>
 
 ENV BUILDER_VERSION=1.0 \
     JDK_VERSION=1.8.0 \
-    TOMCAT_VERSION=8.0.35 \
+    TOMCAT_VERSION=8.0.36 \
     MAVEN_VERSION=3.3.9 \
     CATALINA_OPTS="-Xms512M -Xmx1024M -server -XX:+UseParallelGC" \
     JAVA_OPTS="-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom"
@@ -19,7 +19,7 @@ LABEL io.k8s.description="Platform for building Tremolo Security OpenUnison" \
 RUN yum install -y which tar java-${JDK_VERSION}-openjdk-devel.x86_64 net-tools.x86_64 && \
     yum clean all -y && \
     echo -e "\nInstalling Tomcat $TOMCAT_VERSION" && \
-    curl -v http://www.apache.org/dist/tomcat/tomcat-8/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz | tar -zx -C /usr/local && \
+    curl -v https://www.apache.org/dist/tomcat/tomcat-8/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz | tar -zx -C /usr/local && \
     ln -s /usr/local/apache-tomcat-${TOMCAT_VERSION} /usr/local/tomcat && \
     echo -e "\nInstalling Maven $MAVEN_VERSION" && \
     curl -v http://www.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz | tar -zx -C /usr/local && \
