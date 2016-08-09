@@ -8,8 +8,7 @@ ENV BUILDER_VERSION=1.0 \
     TOMCAT_VERSION=8.0.35 \
     MAVEN_VERSION=3.3.9 \
     CATALINA_OPTS="-Xms512M -Xmx1024M -server -XX:+UseParallelGC" \
-    JAVA_OPTS="-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom" \
-    MYSQL_JDBC_VERSION=5.1.38
+    JAVA_OPTS="-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom"
 
 LABEL io.k8s.description="Platform for building Tremolo Security OpenUnison" \
       io.k8s.display-name="builder x.y.z" \
@@ -25,8 +24,6 @@ RUN yum install -y which tar java-${JDK_VERSION}-openjdk-devel.x86_64 net-tools.
     echo -e "\nInstalling Maven $MAVEN_VERSION" && \
     curl -v http://www.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz | tar -zx -C /usr/local && \
     ln -s /usr/local/apache-maven-${MAVEN_VERSION}/bin/mvn /usr/local/bin/mvn && \
-    echo -e "\nGetting MySQL JDBC driver..." && \
-    curl -L --create-dirs http://search.maven.org/remotecontent?filepath=mysql/mysql-connector-java/${MYSQL_JDBC_VERSION}/mysql-connector-java-${MYSQL_JDBC_VERSION}.jar -o /tmp/drivers/mysql-connector-java-${MYSQL_JDBC_VERSION}.jar && \
     mkdir -p /etc/openunison && \
     groupadd -r tremoloadmin -g 433 && \
     mkdir -p /usr/local/tremolo/tremolo-service && \
