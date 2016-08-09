@@ -326,6 +326,7 @@ $ s2i  build /path/to/my/root/myproject tremolosecurity/openunisons2idocker  loc
 This will create an image in your local Docker service called local/openunison with your OpenUnison configuration.  Finally, launch the image.
 
 ```bash
-docker run -ti -p 443:8443 -p 80:8080 -e unisonKeystorePassword:start123 -e OU_HOST:myhost.name -e TEST_USER_NAME:testuser -e TEST_USER_PASSWORD:secret -v /path/to/openunison/unisonKeyStoreDirectory:/etc/openunison --name openunison local/openunison
+$ docker run -ti -p 443:8443 -p 80:8080 -e OU_HOST=ou.myapp.com -e TEST_USER_NAME=testuser -e TEST_USER_PASSWORD=secret -e JAVA_OPTS='-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom -DunisonKeystorePassword=PasswordForTheKeystore' -v /path/to/project/local:/etc/openunison --name openunison local/openunison
 ```
-```
+
+If everything goes as planned, OpenUnison will be running.  You'll be able to access OpenUnison by visiting https://ou.myapp.com/ with the username testuser and the password secret.
