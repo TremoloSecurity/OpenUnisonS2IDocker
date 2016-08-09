@@ -2,6 +2,19 @@
 
 This image is the base "builder" image for OpenUnison.  Its a hardened version of Tomcat 8 with TLS configured and the extra web applications removed.  This provides an easy mechanism for deploying OpenUnison into a generic Docker environment or OpenShift.
 
+## What is OpenUnison?
+
+OpenUnison is an open source identity management solution from Tremolo Security (https://www.tremolosecurity.com/) that provides:
+
+* Web Access Management (WAM)
+* SSO (Single Sign-On/Simplified Sign-On)
+* Workflow based user provisioning
+* User self service portal
+* Reporting
+* Identity Provider
+
+Documentation is available at https://www.tremolosecurity.com/documentation/
+
 ## Deployment Options
 
 Since this image is assumed to work with S2I there are three inputs that can be given to the s2i script:
