@@ -25,6 +25,7 @@ RUN yum install -y which tar java-${JDK_VERSION}-openjdk-devel.x86_64 net-tools.
     curl -v http://www.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz | tar -zx -C /usr/local && \
     ln -s /usr/local/apache-maven-${MAVEN_VERSION}/bin/mvn /usr/local/bin/mvn && \
     mkdir -p /etc/openunison && \
+    mkdir -p /usr/local/tremolo/tremolo-service && \
     groupadd -r tremoloadmin -g 433 && \
     useradd -u 431 -r -g tremoloadmin -d /usr/local/tremolo/tremolo-service -s /sbin/nologin -c "OpenUnison Docker image user" tremoloadmin
 
@@ -36,6 +37,7 @@ ADD run.sh /usr/local/apache-tomcat-${TOMCAT_VERSION}/bin/
 
 RUN chown -R tremoloadmin:tremoloadmin \
     /etc/openunison \
+    /usr/local/tremolo/tremolo-service \
     /usr/local/apache-maven-$MAVEN_VERSION \
     /usr/local/apache-tomcat-$TOMCAT_VERSION \
     /usr/local/tomcat \
