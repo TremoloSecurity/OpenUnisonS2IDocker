@@ -33,7 +33,7 @@ ADD server.xml /usr/local/apache-tomcat-${TOMCAT_VERSION}/conf/
 ADD run.sh /usr/local/apache-tomcat-${TOMCAT_VERSION}/bin/
 
 # Copy the S2I scripts to /usr/local/bin since I updated the io.openshift.s2i.scripts-url label 
-COPY ./.s2i/bin/ /usr/local/bin/s2i
+#COPY ./.s2i/bin/ /usr/local/bin/s2i
 
 RUN chown -R tremoloadmin:tremoloadmin \
     /usr/local/tremolo \
