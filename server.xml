@@ -19,7 +19,7 @@
      define subcomponents such as "Valves" at this level.
      Documentation at /docs/config/server.html
  -->
-<Server port="8005" shutdown="SHUTDOWN">
+<Server port="-1" shutdown="16F72D50E1E69D092099BDC1C07A4865D0F3248EDCB4C7D6673B5B39F2D63A0A">
   <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
   <!-- Security listener. Documentation at /docs/config/listeners.html
   <Listener className="org.apache.catalina.security.SecurityListener" />
@@ -68,7 +68,7 @@
     -->
     <Connector port="8080" protocol="HTTP/1.1"
                connectionTimeout="20000"
-               redirectPort="8443" />
+               redirectPort="8443" server="Apache" />
     <!-- A "Connector" using the shared thread pool-->
     <!--
     <Connector executor="tomcatThreadPool"
@@ -81,18 +81,18 @@
          style configuration. When using the APR/native implementation, the
          OpenSSL style configuration is required as described in the APR/native
          documentation -->
-    
+
     <Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"
                maxThreads="150" SSLEnabled="true" scheme="https" secure="true"
-               clientAuth="false" sslProtocol="TLS" 
+               clientAuth="false" sslProtocol="TLS"
                keystoreFile="/etc/openunison/unisonKeyStore.jks"
                keystoreType="JCEKS"
                keystorePass="${unisonKeystorePassword}"
-               keyAlias="unison-tls"/>
-    
+               keyAlias="unison-tls" server="Apache"/>
+
 
     <!-- Define an AJP 1.3 Connector on port 8009 -->
-    <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
+    <!-- <Connector port="8009" protocol="AJP/1.3" redirectPort="8443" /> -->
 
 
     <!-- An Engine represents the entry point (within Catalina) that processes
@@ -144,4 +144,3 @@
     </Engine>
   </Service>
 </Server>
-
