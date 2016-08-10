@@ -54,12 +54,10 @@ $ keytool -genkeypair -storetype JCEKS -alias unison-tls -keyalg RSA -keysize 20
 
 ## Deploy OpenUnison with s2i
 
-1.  Download the S2I binary for your platform and add it to your path - https://github.com/openshift/source-to-image/releases
-2.  Pull the S2I scripts from GitHub - "git clone https://github.com/TremoloSecurity/OpenUnisonS2I.git"
-3.  Go into the cloned repo, and build the image
+Before building your email, download the S2I binary for your platform and add it to your path - https://github.com/openshift/source-to-image/releases
 
 ```bash
-$ s2i  build /path/to/my/root/myproject tremolosecurity/openunisons2idocker  local/openunison
+$ s2i  build /path/to/my/root/myproject tremolosecurity/openunisons2idocker:1.0.7  local/openunison
 ```
 
 This will create an image in your local Docker service called local/openunison with your OpenUnison configuration.  Finally, launch the image.

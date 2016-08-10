@@ -14,7 +14,7 @@ LABEL io.k8s.description="Platform for building Tremolo Security OpenUnison" \
       io.k8s.display-name="OpenUnison Builder 1.0.7" \
       io.openshift.expose-services="8080:8443" \
       io.openshift.tags="builder,1.0.7,sso,identity management" \
-      io.openshift.s2i.scripts-url="file://.s2i/bin"
+      io.openshift.s2i.scripts-url="image:///usr/local/bin/s2i"
 
 RUN yum install -y which tar java-${JDK_VERSION}-openjdk-devel.x86_64 net-tools.x86_64 && \
     yum clean all -y && \
@@ -33,7 +33,7 @@ ADD server.xml /usr/local/apache-tomcat-${TOMCAT_VERSION}/conf/
 ADD run.sh /usr/local/apache-tomcat-${TOMCAT_VERSION}/bin/
 
 # Copy the S2I scripts to /usr/local/bin since I updated the io.openshift.s2i.scripts-url label
-#COPY ./.s2i/bin/ /usr/local/bin/s2i
+COPY ./s2i/bin/ /usr/local/bin/s2i
 
 RUN chown -R tremoloadmin:tremoloadmin \
     /etc/openunison \
