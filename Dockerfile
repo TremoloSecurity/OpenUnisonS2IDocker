@@ -8,7 +8,7 @@ ENV BUILDER_VERSION=1.0 \
     MAVEN_VERSION=3.3.9 \
     CATALINA_OPTS="-Xms512M -Xmx1024M -server -XX:+UseParallelGC" \
     JAVA_OPTS="-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom" \
-    TOMCAT_VERSION="8.0.36"
+    TOMCAT_VERSION="8.0.39"
 
 LABEL io.k8s.description="Platform for building Tremolo Security OpenUnison" \
       io.k8s.display-name="OpenUnison Builder 1.0.7" \
