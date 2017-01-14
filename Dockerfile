@@ -16,7 +16,7 @@ LABEL io.k8s.description="Platform for building Tremolo Security OpenUnison" \
       io.openshift.tags="builder,1.0.7,sso,identity management" \
       io.openshift.s2i.scripts-url="image:///usr/local/bin/s2i"
 
-RUN yum install -y which tar java-${JDK_VERSION}-openjdk-devel.x86_64 net-tools.x86_64 && \
+RUN yum install -y unzip which tar java-${JDK_VERSION}-openjdk-devel.x86_64 net-tools.x86_64 && \
     yum clean all -y && \
     echo -e "\nInstalling Tomcat $TOMCAT_VERSION" && \
     curl -v https://www.apache.org/dist/tomcat/tomcat-8/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz | tar -zx -C /usr/local && \

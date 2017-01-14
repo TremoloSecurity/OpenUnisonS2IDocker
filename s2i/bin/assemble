@@ -24,7 +24,12 @@ function setup_webapps() {
 
   echo "Copying war file to webapps/ROOT.war..."
   warFileName=`find /tmp/src -type f -name openunison*.war -print`
-  cp $warFileName $TOMCAT_HOME/webapps/ROOT.war
+	mkdir $TOMCAT_HOME/webapps/ROOT
+	cp $warFileName $TOMCAT_HOME/webapps/ROOT/ROOT.war
+	cd $TOMCAT_HOME/webapps/ROOT/
+	unzip ROOT.war
+	rm -rf ROOT.war
+
 
 	echo "Removing source..."
 	rm -rf /tmp/src
@@ -66,6 +71,9 @@ elif [ -f "/tmp/src/pom.xml" ]; then
     echo "Aborting due to error code $ERR from mvn package"
     exit $ERR
   fi
+
+  echo "Deleting build artifacts"
+	rm -rf ~/.m2
 
   setup_webapps
 else
