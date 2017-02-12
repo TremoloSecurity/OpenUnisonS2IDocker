@@ -23,7 +23,7 @@ function setup_webapps() {
   rm -rf $TOMCAT_HOME/webapps/*
 
   echo "Copying war file to webapps/ROOT.war..."
-  warFileName=`find /tmp/src -type f -name openunison*.war -print`
+  warFileName=`find /tmp/src -type f -name *.war -print`
 	mkdir $TOMCAT_HOME/webapps/ROOT
 	cp $warFileName $TOMCAT_HOME/webapps/ROOT/ROOT.war
 	cd $TOMCAT_HOME/webapps/ROOT/
@@ -45,7 +45,7 @@ function setup_webapps() {
 
 echo "Looking for OpenUnison war file or pom.xml..."
 #numWarFiles=`find /tmp/src -maxdepth 1 -type f -iname *.war -print | wc -l`
-numWarFiles=`find /tmp/src/ -type f -name openunison*.war -print | wc -l`
+numWarFiles=`find /tmp/src/ -type f -name *.war -print | wc -l`
 echo "numWarFiles: $numWarFiles"
 if [ $numWarFiles -eq 1 ]; then
   echo "Found OpenUnison war file. Deploying..."
