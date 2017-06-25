@@ -84,11 +84,13 @@
 
     <Connector port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol"
                maxThreads="150" SSLEnabled="true" scheme="https" secure="true"
-               clientAuth="false" sslProtocol="TLS"
+               clientAuth="#[TOMCAT_TLS_CLIENT_AUTH]" sslProtocol="TLS"
                keystoreFile="/etc/openunison/unisonKeyStore.jks"
                keystoreType="JCEKS"
-               keystorePass="${unisonKeystorePassword}"
+               keystorePass="#[unisonKeystorePassword]"
                keyAlias="unison-tls" server="Apache"
+               truststoreFile="/etc/openunison/unisonKeyStore.jks"
+               truststoreType="JCEKS"
                ciphers="TLS_RSA_WITH_RC4_128_SHA,TLS_RSA_WITH_AES_128_CBC_SHA,TLS_RSA_WITH_AES_256_CBC_SHA,TLS_RSA_WITH_3DES_EDE_CBC_SHA,TLS_RSA_WITH_AES_128_CBC_SHA256,TLS_RSA_WITH_AES_256_CBC_SHA256"/>
 
 
