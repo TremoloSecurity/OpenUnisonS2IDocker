@@ -8,14 +8,14 @@ ENV BUILDER_VERSION=1.0 \
     MAVEN_VERSION=3.3.9 \
     CATALINA_OPTS="-Xms512M -Xmx1024M -server -XX:+UseParallelGC" \
     JAVA_OPTS="-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom" \
-    TOMCAT_VERSION="8.5.15" \
+    TOMCAT_VERSION="8.5.20" \
     CLASSPATH="/tmp/quartz"
 
 
 LABEL io.k8s.description="Platform for building Tremolo Security OpenUnison" \
-      io.k8s.display-name="OpenUnison Builder 1.0.11" \
+      io.k8s.display-name="OpenUnison Builder 1.0.12" \
       io.openshift.expose-services="8080:8443" \
-      io.openshift.tags="builder,1.0.11,sso,identity management" \
+      io.openshift.tags="builder,1.0.12,sso,identity management" \
       io.openshift.s2i.scripts-url="image:///usr/local/bin/s2i"
 
 RUN yum install -y python unzip which tar java-${JDK_VERSION}-openjdk-devel.x86_64 net-tools.x86_64 openssl && \
