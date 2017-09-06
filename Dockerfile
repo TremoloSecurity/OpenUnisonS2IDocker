@@ -8,7 +8,7 @@ ENV BUILDER_VERSION=1.0 \
     MAVEN_VERSION=3.3.9 \
     CATALINA_OPTS="-Xms512M -Xmx1024M -server -XX:+UseParallelGC" \
     JAVA_OPTS="-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom" \
-    TOMCAT_VERSION="8.5.15" \
+    TOMCAT_VERSION="8.5.20" \
     CLASSPATH="/tmp/quartz"
 
 
