@@ -33,9 +33,6 @@ RUN REPOLIST="rhel-7-server-rpms,rhel-7-server-optional-rpms" && \
     yum -y update-minimal --disablerepo "*" --enablerepo rhel-7-server-rpms --setopt=tsflags=nodocs \
     --security --sec-severity=Important --sec-severity=Critical && \
     yum -y install --disablerepo "*" --enablerepo ${REPOLIST} --setopt=tsflags=nodocs ${INSTALL_PKGS} && \
-    echo -e "\nInstalling Maven $MAVEN_VERSION" && \
-    curl -v http://www.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz | tar -zx -C /usr/local && \
-    ln -s /usr/local/apache-maven-${MAVEN_VERSION}/bin/mvn /usr/local/bin/mvn && \
     mkdir -p /etc/openunison && \
     mkdir -p /etc/openunison-local && \
     mkdir -p /usr/local/openunison && \
@@ -47,7 +44,7 @@ RUN REPOLIST="rhel-7-server-rpms,rhel-7-server-optional-rpms" && \
     mkdir -p /usr/local/openunison/quartz && \
     mkdir -p /usr/local/openunison/amq && \
     mkdir -p /usr/local/openunison/bin && \
-    go-md2man -in /tmp/help.md -out /help.1 && yum -y remove golang-github-cpuguy83-go-md2man 
+    go-md2man -in /tmp/help.md -out /help.1 && yum -y remove golang-github-cpuguy83-go-md2man
 
 ADD run_openunison.sh /usr/local/openunison/bin/run_openunison.sh
 
