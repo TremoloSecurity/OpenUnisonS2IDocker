@@ -8,7 +8,7 @@
 #
 
 APACHE_HOME=/usr/local
-TOMCAT_HOME=`find $APACHE_HOME -type d -name 'apache-tomcat-*' -print`
+
 MAVEN_HOME=`find $APACHE_HOME -type d -name 'apache-maven-*' -print`
 
 if [[ "$1" == "-h" ]]; then
@@ -19,16 +19,12 @@ fi
 
 
 function setup_webapps() {
-  echo "Emptying webapps directory..."
-  rm -rf $TOMCAT_HOME/webapps/*
+
 
   echo "Copying war file to webapps/ROOT.war..."
   warFileName=`find /tmp/src -type f -name *.war -print`
-	mkdir $TOMCAT_HOME/webapps/ROOT
-	cp $warFileName $TOMCAT_HOME/webapps/ROOT/ROOT.war
-	cd $TOMCAT_HOME/webapps/ROOT/
-	unzip ROOT.war
-	rm -rf ROOT.war
+
+	cp $warFileName /usr/local/openunison/war/openunison.war
 
 
 	echo "Removing source..."
@@ -58,7 +54,7 @@ elif [ -f "/tmp/src/pom.xml" ]; then
     export MAVEN_ARGS="package"
   fi
   if [ -z "$MAVEN_ARGS_APPEND" ]; then
-    export MAVEN_ARGS="$MAVEN_ARGS $MAVEN_ARGS_APPEND"
+    export MAVEN_ARGS="$MAVEN_ARGS $MAVEN_ARGS_APPEND -DskipTests=true"
   fi
 
   cd /tmp/src

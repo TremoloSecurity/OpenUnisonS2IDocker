@@ -1,4 +1,4 @@
-FROM centos:7
+FROM registry.access.redhat.com/rhel7
 
 MAINTAINER Tremolo Security, Inc. - Docker <docker@tremolosecurity.com>
 
@@ -7,14 +7,27 @@ ENV BUILDER_VERSION=1.0 \
     MAVEN_VERSION=3.3.9 \
     OPENUNISON_VERSION="1.0.12"
 
-LABEL io.k8s.description="Platform for building Tremolo Security OpenUnison" \
-      io.k8s.display-name="OpenUnison Builder 1.0.12" \
-      io.openshift.expose-services="8080:8443" \
+LABEL name="OpenUnison" \
+      vendor="Tremolo Security, Inc." \
+      version="1.0.12" \
+      release="2017100301" \
+### Recommended labels below
+      url="https://www.tremolosecurity.com/unison/" \
+      summary="Platform for building Tremolo Security OpenUnison" \
+      description="OpenUnison is an identity management platforms that can provide solutions for applications and infrastructure. Services include user provisioning, web access management & SSO, LDAP virtual directory and a user self service portal." \
+      run='docker run -tdi -p 443:8443 -p 80:8080 -v /tmp/ou/etc:/etc/openunison:Z --name ${NAME} ${IMAGE}' \
+      io.k8s.description="Cloud Native Identity Management" \
+      io.k8s.display-name="OpenUnison Builder 1.0.12  " \
+      io.openshift.expose-services="8080:http,8443:https" \
+      io.openshift.tags="identity management,sso,user provisioning,devops,saml,openid connect" \
       io.openshift.tags="builder,1.0.12,sso,identity management" \
       io.openshift.s2i.scripts-url="image:///usr/local/bin/s2i"
 
+ADD metadata/help.md /tmp/help.md
+COPY licenses /licenses
+
 RUN yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical --setopt=tsflags=nodocs && \
-    yum install -y unzip which tar java-${JDK_VERSION}-openjdk-devel.x86_64 net-tools.x86_64 && \
+    yum install -y --setopt=tsflags=nodocs golang-github-cpuguy83-go-md2man unzip which tar java-${JDK_VERSION}-openjdk-devel.x86_64 net-tools.x86_64 && \
     yum clean all -y && \
     echo -e "\nInstalling Maven $MAVEN_VERSION" && \
     curl -v http://www.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz | tar -zx -C /usr/local && \
@@ -29,7 +42,8 @@ RUN yum -y update-minimal --security --sec-severity=Important --sec-severity=Cri
     mkdir -p /usr/local/openunison/config && \
     mkdir -p /usr/local/openunison/quartz && \
     mkdir -p /usr/local/openunison/amq && \
-    mkdir -p /usr/local/openunison/bin
+    mkdir -p /usr/local/openunison/bin && \
+    go-md2man -in /tmp/help.md -out /help.1 && yum -y remove golang-github-cpuguy83-go-md2man && \
 
 ADD run_openunison.sh /usr/local/openunison/bin/run_openunison.sh
 
@@ -46,6 +60,8 @@ RUN chown -R openunison:openunison \
     /usr/local/apache-maven-$MAVEN_VERSION \
     /usr/local/bin/mvn \
   && chmod +x /usr/local/openunison/bin/*
+
+VOLUME /etc/openunison
 
 USER 431
 
