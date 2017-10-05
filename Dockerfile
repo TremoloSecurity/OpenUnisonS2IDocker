@@ -15,10 +15,6 @@ LABEL io.k8s.description="Platform for building Tremolo Security OpenUnison" \
 
 RUN yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical --setopt=tsflags=nodocs && \
     yum install -y unzip which tar java-${JDK_VERSION}-openjdk-devel.x86_64 net-tools.x86_64 && \
-    yum clean all -y && \
-    echo -e "\nInstalling Maven $MAVEN_VERSION" && \
-    curl -v http://www.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz | tar -zx -C /usr/local && \
-    ln -s /usr/local/apache-maven-${MAVEN_VERSION}/bin/mvn /usr/local/bin/mvn && \
     mkdir -p /etc/openunison && \
     mkdir -p /etc/openunison-local && \
     mkdir -p /usr/local/openunison && \
@@ -29,7 +25,9 @@ RUN yum -y update-minimal --security --sec-severity=Important --sec-severity=Cri
     mkdir -p /usr/local/openunison/config && \
     mkdir -p /usr/local/openunison/quartz && \
     mkdir -p /usr/local/openunison/amq && \
-    mkdir -p /usr/local/openunison/bin
+    mkdir -p /usr/local/openunison/bin && \
+    yum clean all -y && \
+    rm -rf /var/cache/yum
 
 ADD run_openunison.sh /usr/local/openunison/bin/run_openunison.sh
 
