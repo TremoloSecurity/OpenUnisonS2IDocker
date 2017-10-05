@@ -40,8 +40,6 @@ RUN chown -R openunison:openunison \
     /etc/openunison \
     /etc/openunison-local \
     /usr/local/openunison \
-    /usr/local/apache-maven-$MAVEN_VERSION \
-    /usr/local/bin/mvn \
   && chmod +x /usr/local/openunison/bin/*
 
 
