@@ -34,10 +34,9 @@ RUN yum -y update-minimal --security --sec-severity=Important --sec-severity=Cri
 ADD run_openunison.sh /usr/local/openunison/bin/run_openunison.sh
 
 
-
-
 # Copy the S2I scripts to /usr/local/bin since I updated the io.openshift.s2i.scripts-url label
 COPY ./s2i/bin/ /usr/local/bin/s2i
+
 
 RUN chown -R openunison:openunison \
     /etc/openunison \
@@ -46,6 +45,7 @@ RUN chown -R openunison:openunison \
     /usr/local/apache-maven-$MAVEN_VERSION \
     /usr/local/bin/mvn \
   && chmod +x /usr/local/openunison/bin/*
+
 
 USER 431
 

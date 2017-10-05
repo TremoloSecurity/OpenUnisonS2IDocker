@@ -8,7 +8,11 @@
 #
 
 APACHE_HOME=/usr/local
+<<<<<<< HEAD
 
+=======
+TOMCAT_HOME="/usr/local/tomcat"
+>>>>>>> aef24ddee48778387a9efb3729efe37c38533913
 MAVEN_HOME=`find $APACHE_HOME -type d -name 'apache-maven-*' -print`
 
 if [[ "$1" == "-h" ]]; then
