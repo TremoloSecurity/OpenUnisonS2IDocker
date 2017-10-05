@@ -26,10 +26,13 @@ LABEL name="OpenUnison" \
 ADD metadata/help.md /tmp/help.md
 COPY licenses /licenses
 
-RUN yum-config-manager --enable rhel-7-server-rpms,rhel-7-server-optional-rpms &> /dev/null && \
-    yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical --setopt=tsflags=nodocs && \
-    yum install -y --setopt=tsflags=nodocs golang-github-cpuguy83-go-md2man unzip which tar java-${JDK_VERSION}-openjdk-devel.x86_64 net-tools.x86_64 && \
-    yum clean all -y && \
+RUN REPOLIST="rhel-7-server-rpms,rhel-7-server-optional-rpms" && \
+    INSTALL_PKGS="golang-github-cpuguy83-go-md2man wget which java-${JDK_VERSION}-openjdk-devel.x86_64 unzip tar" && \
+    yum clean all && yum-config-manager --disable \* &> /dev/null && \
+    ### Add necessary Red Hat repos here
+    yum -y update-minimal --disablerepo "*" --enablerepo rhel-7-server-rpms --setopt=tsflags=nodocs \
+    --security --sec-severity=Important --sec-severity=Critical && \
+    yum -y install --disablerepo "*" --enablerepo ${REPOLIST} --setopt=tsflags=nodocs ${INSTALL_PKGS} && \
     echo -e "\nInstalling Maven $MAVEN_VERSION" && \
     curl -v http://www.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz | tar -zx -C /usr/local && \
     ln -s /usr/local/apache-maven-${MAVEN_VERSION}/bin/mvn /usr/local/bin/mvn && \
