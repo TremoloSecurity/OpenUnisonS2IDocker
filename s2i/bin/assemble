@@ -28,7 +28,7 @@ function setup_webapps() {
 
 	echo "Creating $OPENUNISON_WORK"
 	mkdir -p $OPENUNISON_WORK/webapp
-	cp $OPENUNISON_DIR/war/openunison.war $OPENUNISON_WORK/webapp/
+	mv $OPENUNISON_DIR/war/openunison.war $OPENUNISON_WORK/webapp/
 	cd $OPENUNISON_WORK/webapp
 	unzip $(ls *.war) > /dev/null
 
