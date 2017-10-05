@@ -105,7 +105,7 @@ OU_HOST=localhost.localdomain
 TEST_USER_NAME=testuser
 TEST_USER_PASSWORD=secret_password
 unisonKeystorePassword=start123
-unisonKeystorePath=/etc/openunison/config/unisonKeyStore.jks
+unisonKeystorePath=/etc/openunison/unisonKeyStore.jks
 ```
 
 NOTE: make sure you specify the passwords you used earlier to create the keystore.
