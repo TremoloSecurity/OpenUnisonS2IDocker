@@ -26,7 +26,6 @@ RUN yum -y update-minimal --security --sec-severity=Important --sec-severity=Cri
     mkdir -p /usr/local/openunison/quartz && \
     mkdir -p /usr/local/openunison/amq && \
     mkdir -p /usr/local/openunison/bin && \
-    yum clean all -y && \
     rm -rf /var/cache/yum
 
 ADD run_openunison.sh /usr/local/openunison/bin/run_openunison.sh
