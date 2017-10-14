@@ -7,8 +7,7 @@
 #	https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md
 #
 
-APACHE_HOME=/usr/local
-MAVEN_HOME=`find $APACHE_HOME -type d -name 'apache-maven-*' -print`
+
 
 if [[ "$1" == "-h" ]]; then
 	# If the 'openunison-centos7' assemble script is executed with '-h' flag,
