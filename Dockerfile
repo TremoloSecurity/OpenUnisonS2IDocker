@@ -29,6 +29,7 @@ RUN yum -y update-minimal --security --sec-severity=Important --sec-severity=Cri
     rm -rf /var/cache/yum
 
 ADD run_openunison.sh /usr/local/openunison/bin/run_openunison.sh
+ADD check_alive.py /usr/local/openunison/bin/check_alive.py
 
 
 # Copy the S2I scripts to /usr/local/bin since I updated the io.openshift.s2i.scripts-url label
