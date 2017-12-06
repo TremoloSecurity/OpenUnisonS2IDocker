@@ -121,8 +121,8 @@ secure_port: 8443
 secure_external_port: 443
 secure_key_alias: "unison-tls"
 force_to_secure: true
-activemq_dir: "/usr/local/openunison/amq"
-quartz_dir: "/usr/local/openunison/quartz"
+activemq_dir: "/tmp/amq"
+quartz_dir: "/tmp/quartz"
 client_auth: none
 allowed_client_names: []
 ciphers:
