@@ -5,12 +5,12 @@ MAINTAINER Tremolo Security, Inc. - Docker <docker@tremolosecurity.com>
 ENV BUILDER_VERSION=1.0 \
     JDK_VERSION=1.8.0 \
     MAVEN_VERSION=3.3.9 \
-    OPENUNISON_VERSION="1.0.12"
+    OPENUNISON_VERSION="1.0.13"
 
 LABEL io.k8s.description="Platform for building Tremolo Security OpenUnison" \
-      io.k8s.display-name="OpenUnison Builder 1.0.12" \
+      io.k8s.display-name="OpenUnison Builder 1.0.13" \
       io.openshift.expose-services="8080:8443" \
-      io.openshift.tags="builder,1.0.12,sso,identity management" \
+      io.openshift.tags="builder,1.0.13,sso,identity management" \
       io.openshift.s2i.scripts-url="image:///usr/local/bin/s2i"
 
 RUN yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical --setopt=tsflags=nodocs && \
