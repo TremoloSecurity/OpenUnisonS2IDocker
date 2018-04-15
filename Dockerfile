@@ -5,7 +5,7 @@ MAINTAINER Tremolo Security, Inc. - Docker <docker@tremolosecurity.com>
 ENV BUILDER_VERSION=1.0 \
     JDK_VERSION=1.8.0 \
     MAVEN_VERSION=3.3.9 \
-    OPENUNISON_VERSION="1.0.13"
+    OPENUNISON_VERSION="1.0.13.2"
 
 LABEL io.k8s.description="Platform for building Tremolo Security OpenUnison" \
       io.k8s.display-name="OpenUnison Builder 1.0.13" \
