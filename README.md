@@ -144,7 +144,7 @@ NOTE: It's very important to not change the paths.  Configuration changes in thi
 Before building your container, download the S2I binary for your platform and add it to your path - https://github.com/openshift/source-to-image/releases
 
 ```bash
-$ s2i  build /path/to/my/root/myproject tremolosecurity/openunisons2idocker:1.0.12  local/openunison
+$ s2i  build /path/to/my/root/myproject tremolosecurity/openunisons2idocker  local/openunison
 ```
 
 This will create an image in your local Docker service called local/openunison with your OpenUnison configuration.  Finally, launch the image.
