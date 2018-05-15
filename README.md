@@ -64,7 +64,7 @@ The next step is to go into `local` to create the keystore and paramters file:
 
 **Create Keystore TLS key**
 ```bash
-$ keytool -genkeypair -storetype JCEKS -alias unison-tls -keyalg RSA -keysize 2048 -sigalg SHA256withRSA -keystore ./unisonKeyStore.jks -validity 3650
+$ keytool -genkeypair -storetype PKCS12 -alias unison-tls -keyalg RSA -keysize 2048 -sigalg SHA256withRSA -keystore ./unisonKeyStore.p12 -validity 3650
 Enter keystore password:
 Re-enter new password:
 What is your first and last name?
@@ -92,7 +92,7 @@ Next, create a sessoin key
 
 **Create OpenUnison Session Key**
 ```bash
-$ keytool -genseckey -alias session-unison -keyalg AES -keysize 256 -storetype JCEKS -keystore ./unisonKeyStore.jks
+$ keytool -genseckey -alias session-unison -keyalg AES -keysize 256 -storetype PKCS12 -keystore ./unisonKeyStore.p12
 ```
 
 NOTE: Make sure that your keystore password and key password are the same.
@@ -105,7 +105,7 @@ OU_HOST=localhost.localdomain
 TEST_USER_NAME=testuser
 TEST_USER_PASSWORD=secret_password
 unisonKeystorePassword=start123
-unisonKeystorePath=/etc/openunison/unisonKeyStore.jks
+unisonKeystorePath=/etc/openunison/unisonKeyStore.p12
 ```
 
 NOTE: make sure you specify the passwords you used earlier to create the keystore.
