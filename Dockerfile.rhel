@@ -5,12 +5,12 @@ MAINTAINER Tremolo Security, Inc. - Docker <docker@tremolosecurity.com>
 ENV BUILDER_VERSION=1.0 \
     JDK_VERSION=1.8.0 \
     MAVEN_VERSION=3.3.9 \
-    OPENUNISON_VERSION="1.0.14"
+    OPENUNISON_VERSION="1.0.15"
 
 LABEL name="OpenUnison" \
       vendor="Tremolo Security, Inc." \
-      version="1.0.14" \
-      release="2018050401" \
+      version="1.0.15" \
+      release="2018070601" \
 ### Recommended labels below
       url="https://www.tremolosecurity.com/unison/" \
       summary="Platform for building Tremolo Security OpenUnison" \
