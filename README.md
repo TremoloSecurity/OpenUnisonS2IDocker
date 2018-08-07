@@ -1,6 +1,12 @@
 # OpenUnisonS2IDocker
 
-This image is the base "builder" image for OpenUnison.
+This image is the base "builder" image for OpenUnison.  It is intended to be used with [Source-To-Image](https://github.com/openshift/source-to-image/blob/master/docs/builder_image.md#required-image-contents) (S2I).
+
+
+## A Bit of Background About Source-To-Image (S2I)
+S2I generates a new Docker image using source code and a builder Docker image.  As the name implies, Source-To-Image is responsible for transforming application source into an executable Docker image.  The builder image contains the specific intelligence required to produce that executable image.
+
+More information on how to use and create builder images with S2I can be found here: https://blog.openshift.com/create-s2i-builder-image/.
 
 ## What is OpenUnison?
 
@@ -17,52 +23,52 @@ Documentation is available at https://www.tremolosecurity.com/documentation/
 
 ## Deployment Options
 
-Since this image is assumed to work with S2I there are three inputs that can be given to the s2i script:
+To use this image with S2I, one of the following must be passed to the s2i script:
 
-1. A directory containing the OpenUnison war file
-2. A directory containing a maven project to build an OpenUnison deployment
-3. A git URL to a repository containing a maven project to build an OpenUnison deployment
+1. A directory containing the OpenUnison WAR file, or
+2. A directory containing an [Apache Maven](https://maven.apache.org/) project to build an OpenUnison deployment, or
+3. A git URL to a repository containing an Apache Maven project to build an OpenUnison deployment
 
-Some assumptions are made about the deployment, each of which is covered in detail in the next section:
+## Deployment Assumptions
 
-1. OpenUnison is built with the `openunison-on-undertow` dependency
+This document makes the following assumptions about the deployment.  Each of these is covered in more detail in the next section.
+
 1. The OpenUnison keystore is stored OUTSIDE of the final image in a volume (or secret for Kubernetes or OpenShift)
-2. Passwords, host names and other environment specific information is stored in a properties file
+2. Passwords, host names and other environment-specific information is stored in a properties file
 
 ## Configuring OpenUnison
 
 ### The Build Process
 
-OpenUnison Deploying OpenUnison on Undertow uses the below workflow:
+The OpenUnison build process follows a simple workflow that uses Apache Maven and the overlay plugin to combine your specific configurations and the standard OpenUnison build into a WAR file that is unique to your deployment.  The WAR file is then integrated into the final container image.
 
 ![OpenUnison build diagram](doc-imgs/openunison_build.png)
 
-Maven is used with the overlay plugin to combine your specific configurations with the standard OpenUnison build to create a war file that includes:
-
-1. OpenUnison's baseline dependencies
-2. Undertow
-3. Your configuration and libraries
-
-The resulting war file from your build is then integrated into the final container image.
-
 ### Quick Starts
 
-There are a number of quick starts available in the Tremolo Security github repositories - https://github.com/TremoloSecurity?utf8=%E2%9C%93&q=openunison-qs&type=&language=.  Each one has its own set of configuration variables and pre-requisites.  The rest of this tutorial assumes using the openunison-qs-simple project.  
+There are a number of quick starts available in the Tremolo Security github repositories - https://github.com/TremoloSecurity?utf8=%E2%9C%93&q=openunison-qs&type=&language=.  Each one has its own set of configuration variables and pre-requisites.  This document uses the [openunison-qs-simple project](https://github.com/TremoloSecurity/openunison-qs-simple).  
 
-### Setup Your Project
+### Setup The Project
 
-First, fork the quick start you are planning to work off of then clone it locally:
+First, clone the quick start GitHub repository:
 
 ```bash
 $ git clone https://github.com/myusername/openunison-qs-simple.git
-$ mkdir local
 ```
 
 ### Create the OpenUnison Configuration
 
-The next step is to go into `local` to create the keystore and paramters file:
+Next, create a directory to hold the configuration files:
 
-**Create Keystore TLS key**
+```bash
+$ mkdir local
+$ cd local
+```
+
+**Create Keystore and TLS Key**
+
+NOTE: Be sure to set the key password the same as the keystore password 
+
 ```bash
 $ keytool -genkeypair -storetype PKCS12 -alias unison-tls -keyalg RSA -keysize 2048 -sigalg SHA256withRSA -keystore ./unisonKeyStore.p12 -validity 3650
 Enter keystore password:
@@ -86,18 +92,15 @@ Enter key password for <unison-tls>
 	(RETURN if same as keystore password):
 ```
 
-NOTE: Make sure that your keystore password and key password are the same.
+**Create the OpenUnison Session Key**
 
-Next, create a sessoin key
+NOTE: Be sure to set the key password the same as the keystore password
 
-**Create OpenUnison Session Key**
 ```bash
 $ keytool -genseckey -alias session-unison -keyalg AES -keysize 256 -storetype PKCS12 -keystore ./unisonKeyStore.p12
 ```
 
-NOTE: Make sure that your keystore password and key password are the same.
-
-Once the keystore is created, create a file called `ou.env` with the bellow content:
+Create a file called `ou.env` using the example below as a template.  Enter the password used in the steps above to create the keystore/keys on the appropriate lines.
 
 **ou.env File**
 ```properties
@@ -108,9 +111,9 @@ unisonKeystorePassword=start123
 unisonKeystorePath=/etc/openunison/unisonKeyStore.p12
 ```
 
-NOTE: make sure you specify the passwords you used earlier to create the keystore.
+Create the `openunison.yaml` file using the example below as a template:
 
-Next create the `openunison.yaml` file:
+NOTE: Do not change the path values in the openunison.yaml file below.  Configuration changes in this file should be limited to the TLS configuration (i.e. changing the ciphers, adding client authentication, etc).
 
 **openunison.yaml**
 ```yaml
@@ -136,24 +139,24 @@ path_to_deployment: "/usr/local/openunison/work"
 path_to_env_file: "/etc/openunison/ou.env"
 ```
 
-NOTE: It's very important to not change the paths.  Configuration changes in this file should focus on the TLS configuration (ie chenging the ciphers, adding client authentication, etc).
 
+## Deploy OpenUnison with S2I
 
-## Deploy OpenUnison with s2i
+Before building the container image, download the S2I binary for your platform and add it to your path - https://github.com/openshift/source-to-image/releases
 
-Before building your container, download the S2I binary for your platform and add it to your path - https://github.com/openshift/source-to-image/releases
+Build the container image:
 
 ```bash
 $ s2i  build /path/to/my/root/myproject tremolosecurity/openunisons2idocker  local/openunison
 ```
 
-This will create an image in your local Docker service called local/openunison with your OpenUnison configuration.  Finally, launch the image.
+An image called 'local/openunison' will be created and added to your local Docker instance.  The image contains OpenUnison and your configuration.  Launch a container using the image with the following command.  Be sure to replace `/path/to/local` with the appropriate value for your environment.
 
 ```bash
-$ docker run -ti -p 8443:8443 -v /path/to/local:/etc/openunison:Z  -e JAVA_OPTS='-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom' --name openunison local/openunison
+$ docker run -p 8443:8443 -v /path/to/local:/etc/openunison:Z  -e JAVA_OPTS='-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom' --name openunison local/openunison
 ```
 
-If everything goes as planned, OpenUnison will be running.  You'll be able to access OpenUnison by visiting https://localhost.localdomain/ with the username `testuser` and the password `secret_password`:
+OpenUnison should now be running.  Access it by visiting https://localhost.localdomain:8443/ with the username `testuser` and the password `secret_password` (or the values used in the ou.env file, if different than the sample above):
 
 ![OpenUnison Login Page](doc-imgs/login.png)
 
