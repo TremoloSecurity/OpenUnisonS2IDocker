@@ -1,4 +1,4 @@
-FROM centos:7
+FROM ubuntu:18.04
 
 MAINTAINER Tremolo Security, Inc. - Docker <docker@tremolosecurity.com>
 
@@ -13,8 +13,7 @@ LABEL io.k8s.description="Platform for building Tremolo Security OpenUnison" \
       io.openshift.tags="builder,1.0.15,sso,identity management" \
       io.openshift.s2i.scripts-url="image:///usr/local/bin/s2i"
 
-RUN yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical --setopt=tsflags=nodocs && \
-    yum install -y unzip which tar java-${JDK_VERSION}-openjdk-devel.x86_64 net-tools.x86_64 && \
+RUN apt-get update;apt-get -y install curl openjdk-8-jdk-headless wget unzip python;apt-get -y upgrade;apt-get clean;rm -rf /var/lib/apt/lists/*; \ 
     mkdir -p /etc/openunison && \
     mkdir -p /etc/openunison-local && \
     mkdir -p /usr/local/openunison && \
@@ -25,8 +24,7 @@ RUN yum -y update-minimal --security --sec-severity=Important --sec-severity=Cri
     mkdir -p /usr/local/openunison/config && \
     mkdir -p /usr/local/openunison/quartz && \
     mkdir -p /usr/local/openunison/amq && \
-    mkdir -p /usr/local/openunison/bin && \
-    rm -rf /var/cache/yum
+    mkdir -p /usr/local/openunison/bin 
 
 ADD run_openunison.sh /usr/local/openunison/bin/run_openunison.sh
 ADD check_alive.py /usr/local/openunison/bin/check_alive.py
