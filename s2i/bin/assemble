@@ -72,8 +72,22 @@ elif [ -f "/tmp/src/pom.xml" ]; then
     export MAVEN_ARGS="package"
   fi
   if [ -z "$MAVEN_ARGS_APPEND" ]; then
-    export MAVEN_ARGS="$MAVEN_ARGS $MAVEN_ARGS_APPEND -DskipTests=true"
+    export MAVEN_ARGS="$MAVEN_ARGS $MAVEN_ARGS_APPEND -DskipPackages"
   fi
+
+  echo "Maven Remote Cert : $MVN_REMOTE_CERT"
+	export MAVEN_OPTS="$MAVEN_OPTS "
+	if [[ -v MVN_REMOTE_CERT ]]; then
+		echo "unpacking cert"
+		echo $MVN_REMOTE_CERT | base64 -d > /tmp/cert.pem
+		cat /tmp/cert.pem
+		echo "importing cert"
+		keytool -import -trustcacerts -noprompt -file /tmp/cert.pem -rfc -alias remote-nexus -storepass changeit -storetype JKS -v -keystore /tmp/cacerts
+		keytool -importkeystore -srckeystore /usr/lib/jvm/jre/lib/security/cacerts -srcstorepass changeit -destkeystore /tmp/cacerts -deststorepass changeit -v
+		echo "Setting MAVEN_ARGS"
+		export MAVEN_OPTS="$MAVEN_OPTS -Djavax.net.ssl.trustStore=/tmp/cacerts -Djavax.net.ssl.trustStorePassword=changeit"
+		echo "maven args - $MAVEN_OPTS"
+	fi
 
   cd /tmp/src
   /usr/local/openunison/build/apache-maven-${MAVEN_VERSION}/bin/mvn --version
