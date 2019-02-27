@@ -13,7 +13,7 @@ LABEL io.k8s.description="Platform for building Tremolo Security OpenUnison" \
       io.openshift.tags="builder,1.0.15,sso,identity management" \
       io.openshift.s2i.scripts-url="image:///usr/local/bin/s2i"
 
-RUN yum -y update-minimal --security --sec-severity=Important --sec-severity=Critical --setopt=tsflags=nodocs && \
+RUN yum -y upgrade --setopt=tsflags=nodocs && \
     yum install -y unzip which tar java-${JDK_VERSION}-openjdk-devel.x86_64 net-tools.x86_64 && \
     mkdir -p /etc/openunison && \
     mkdir -p /etc/openunison-local && \
