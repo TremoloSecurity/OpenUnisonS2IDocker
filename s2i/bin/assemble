@@ -64,35 +64,23 @@ elif [ -f "/tmp/src/pom.xml" ]; then
   echo "Found pom.xml... attempting to build with 'mvn ${MAVEN_ARGS}'"
 
 	echo -e "\nInstalling Maven $MAVEN_VERSION"
-	mkdir /usr/local/openunison/build
-	curl -v http://www.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz | tar -zx -C /usr/local/openunison/build
+	mkdir /tmp/build
+	wget -O /tmp/build/apache-maven-${MAVEN_VERSION}-bin.tar.gz http://www.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz
+	cd /tmp/build
+	tar -xzf apache-maven-${MAVEN_VERSION}-bin.tar.gz
 
 
   if [ -z "$MAVEN_ARGS" ]; then
     export MAVEN_ARGS="package"
   fi
   if [ -z "$MAVEN_ARGS_APPEND" ]; then
-    export MAVEN_ARGS="$MAVEN_ARGS $MAVEN_ARGS_APPEND -DskipPackages"
+    export MAVEN_ARGS="$MAVEN_ARGS $MAVEN_ARGS_APPEND -DskipTests=true"
   fi
 
-  echo "Maven Remote Cert : $MVN_REMOTE_CERT"
-	export MAVEN_OPTS="$MAVEN_OPTS "
-	if [[ -v MVN_REMOTE_CERT ]]; then
-		echo "unpacking cert"
-		echo $MVN_REMOTE_CERT | base64 -d > /tmp/cert.pem
-		cat /tmp/cert.pem
-		echo "importing cert"
-		keytool -import -trustcacerts -noprompt -file /tmp/cert.pem -rfc -alias remote-nexus -storepass changeit -storetype JKS -v -keystore /tmp/cacerts
-		keytool -importkeystore -srckeystore /usr/lib/jvm/jre/lib/security/cacerts -srcstorepass changeit -destkeystore /tmp/cacerts -deststorepass changeit -v
-		echo "Setting MAVEN_ARGS"
-		export MAVEN_OPTS="$MAVEN_OPTS -Djavax.net.ssl.trustStore=/tmp/cacerts -Djavax.net.ssl.trustStorePassword=changeit"
-		echo "maven args - $MAVEN_OPTS"
-	fi
-
   cd /tmp/src
-  /usr/local/openunison/build/apache-maven-${MAVEN_VERSION}/bin/mvn --version
+  /tmp/build/apache-maven-${MAVEN_VERSION}/bin/mvn --version
   echo "MAVEN_ARGS: $MAVEN_ARGS"
-  /usr/local/openunison/build/apache-maven-${MAVEN_VERSION}/bin/mvn $MAVEN_ARGS
+  /tmp/build/apache-maven-${MAVEN_VERSION}/bin/mvn $MAVEN_ARGS
 
   ERR=$?
   if [ $ERR -ne 0 ]; then
@@ -102,7 +90,7 @@ elif [ -f "/tmp/src/pom.xml" ]; then
 
   echo "Deleting build artifacts"
 	rm -rf ~/.m2
-	rm -rf /usr/local/openunison/build
+	rm -rf /tmp/build
 
   setup_webapps
 else
