@@ -27,7 +27,7 @@ LABEL name="OpenUnison" \
 ADD metadata/help.md /tmp/help.md
 COPY licenses /licenses
 
-RUN yum -y install curl java-1.8.0-openjdk-headless.x86_64 wget unzip;yum -y upgrade;yum clean all && \
+RUN yum -y install curl java-1.8.0-openjdk-devel.x86_64 wget unzip;yum -y upgrade;yum clean all && \
     mkdir -p /etc/openunison && \
     mkdir -p /etc/openunison-local && \
     mkdir -p /usr/local/openunison && \
