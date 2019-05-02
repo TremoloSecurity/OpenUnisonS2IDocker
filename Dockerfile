@@ -24,7 +24,7 @@ LABEL name="OpenUnison" \
       io.openshift.s2i.scripts-url="image:///usr/local/bin/s2i"
 
 RUN yum -y upgrade --security --sec-severity=Important --sec-severity=Critical --setopt=tsflags=nodocs && \
-    yum install -y unzip which tar java-${JDK_VERSION}-openjdk-devel.x86_64 net-tools.x86_64 && \
+    yum install -y wget unzip which tar java-${JDK_VERSION}-openjdk-devel.x86_64 net-tools.x86_64 && \
     mkdir -p /etc/openunison && \
     mkdir -p /etc/openunison-local && \
     mkdir -p /usr/local/openunison && \
