@@ -19,7 +19,7 @@ jobs:
         DOCKER_REGISTRY_URL: docker.io
         DOCKER_USERNAME: ${{ secrets.OU_REG_USER }}
         DOCKER_PASSWORD: ${{ secrets.OU_REG_PASSWORD }}
-      uses: actions/docker/login@master
+      run: docker login -u ${{ secrets.OU_REG_USER }} -p '${{ secrets.OU_REG_PASSWORD }}'
     - name: push
       env:
         OU_CONTAINER_DEST: ${{ secrets.OU_CONTAINER_DEST }}
